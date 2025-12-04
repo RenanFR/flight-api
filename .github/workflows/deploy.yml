@@ -26,7 +26,7 @@ jobs:
           service_account_key: ${{ secrets.GCP_SA_KEY }}
 
       - name: Activate Service Account
-        run: gcloud auth activate-service-account --key-file=$GOOGLE_GHA_CREDS_PATH
+        run: gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
 
       - name: Authenticate Docker to Artifact Registry
         run: |
