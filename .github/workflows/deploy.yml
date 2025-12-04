@@ -2,8 +2,7 @@ name: Deploy to Cloud Run
 
 on:
   push:
-    branches:
-      - main
+    branches: [ main ]
 
 env:
   PROJECT_ID: ${{ secrets.GCP_PROJECT }}
@@ -19,14 +18,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
       - name: Set up Google Cloud SDK
         uses: google-github-actions/setup-gcloud@v1
         with:
           project_id: ${{ secrets.GCP_PROJECT }}
-          service_account_key: ${{ secrets.GCP_SA_KEY }}
-
-      - name: Activate Service Account
-        run: gcloud auth activate-service-account --key-file="$GOOGLE_APPLICATION_CREDENTIALS"
 
       - name: Authenticate Docker to Artifact Registry
         run: |
